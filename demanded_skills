@@ -1,0 +1,72 @@
+-- Top 10 In-Demand Skills for Data Engineers in Poland
+
+/*
+Objective:
+Identify the most frequently requested technical skills for Data Engineer roles in Poland.
+
+Approach:
+- Join job postings with skill mapping tables.
+- Filter for Data Engineer positions located in Poland.
+- Count the number of job postings requiring each skill.
+- Display the 10 most requested skills.
+*/
+
+SELECT
+    sd.skills AS skill,
+    COUNT(jpf.job_id) AS demand_count
+FROM job_postings_fact jpf
+JOIN skills_job_dim sjd
+    ON jpf.job_id = sjd.job_id
+JOIN skills_dim sd
+    ON sjd.skill_id = sd.skill_id
+WHERE jpf.job_title_short = 'Data Engineer'
+  AND jpf.job_country = 'Poland'
+GROUP BY sd.skills
+ORDER BY demand_count DESC
+LIMIT 10;
+
+/*
+Insights:
+- Python and SQL are the two most sought-after skills.
+- Azure is more commonly requested than AWS.
+- Spark and Airflow are widely used for data processing workflows.
+- Scala and Java remain valuable for enterprise environments.
+- Databricks is becoming increasingly popular among employers.
+*/
+
+------------------------------------------------------------
+
+-- Top 10 In-Demand Skills for Data Engineers Worldwide
+
+/*
+Objective:
+Analyze the global demand for technical skills in Data Engineering roles.
+
+Approach:
+- Join job postings with skill tables.
+- Consider all countries.
+- Count job postings mentioning each skill.
+- Return the top 10 skills by demand.
+*/
+
+SELECT
+    sd.skills AS skill,
+    COUNT(jpf.job_id) AS demand_count
+FROM job_postings_fact jpf
+JOIN skills_job_dim sjd
+    ON jpf.job_id = sjd.job_id
+JOIN skills_dim sd
+    ON sjd.skill_id = sd.skill_id
+WHERE jpf.job_title_short = 'Data Engineer'
+GROUP BY sd.skills
+ORDER BY demand_count DESC
+LIMIT 10;
+
+/*
+Insights:
+- SQL ranks as the most in-demand skill globally, followed closely by Python.
+- AWS has a slight lead over Azure in worldwide job postings.
+- Snowflake and Kafka are widely adopted across global organizations.
+- Spark, Databricks, and Scala continue to be essential tools in modern data engineering.
+- A strong learning roadmap includes SQL, Python, cloud platforms, Spark, and orchestration tools.
+*/
